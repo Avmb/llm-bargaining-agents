@@ -33,11 +33,11 @@ OUT = REPO / "analysis" / "figures"
 
 # display label -> result directory (relative to results/)
 UNTRAINED = [
-    ("claude-sonnet-4-6", "crossmodel/sonnet46"),
-    ("claude-opus-4-7",   "crossmodel/opus47"),
-    ("GPT-5.2",           "crossmodel/gpt52"),
-    ("GPT-5.5",           "crossmodel/gpt55"),
-    ("Qwen3.5-9B",        "crossmodel/qwen35"),
+    ("claude-sonnet-4-6", "zeroshot/sonnet46"),
+    ("claude-opus-4-7",   "zeroshot/opus47"),
+    ("GPT-5.2",           "zeroshot/gpt52"),
+    ("GPT-5.5",           "zeroshot/gpt55"),
+    ("Qwen3.5-9B",        "zeroshot/qwen35"),
 ]
 
 TRAINED = [

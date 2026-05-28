@@ -14,11 +14,11 @@ scenario_generation/  The pipeline that generated the dataset
 core/                 Reference notebook defining the simulator/task/prompt/judge code,
                       plus the honesty/credulity judge rubrics (honesty_templates.py)
 analysis/             Cross-experiment analysis (the honesty-vs-utility scatter plots)
-crossmodel_eval/      Zero-shot 5-model evaluation notebooks (paper Section 4)
+zeroshot_eval/        Zero-shot 5-model evaluation notebooks (paper Section 4)
 rl/                   RL fine-tuning code, configs, launch scripts, and eval notebooks
                       (paper Section 5 + appendices)
 results/              Pre-computed experiment outputs cited in the paper
-   crossmodel/        One dir per zero-shot model
+   zeroshot/          one directory per model
    rl_evals/          One dir per fine-tuned variant (paired vs base)
 ```
 
@@ -58,9 +58,9 @@ scenarios across four price tiers; the paper uses the first ten `low`-tier
 scenarios. See `data/README.md` for the schema. Regenerate it with
 `scenario_generation/bargaining_scenario_generator.ipynb`.
 
-## Reproducing the cross-model evaluation (Section 4)
+## Reproducing the zero-shot model evaluation (Section 4)
 
-Each notebook in `crossmodel_eval/` runs one model in self-play across the four
+Each notebook in `zeroshot_eval/` runs one model in self-play across the four
 transparency conditions (`full`, `buyer_unaware`, `seller_unaware`,
 `both_unaware`), 10 scenarios x 8 trials x 6 rounds = 320 trials, and has the
 GPT-5.2 judge rate honesty/credulity:
@@ -73,7 +73,7 @@ GPT-5.2 judge rate honesty/credulity:
 | `eval_opus47.ipynb`  | claude-opus-4-7 |
 | `eval_qwen35.ipynb`  | Qwen3.5-9B (local vLLM) |
 
-The pre-computed outputs are in `results/crossmodel/`. Per-condition deal-rate,
+The pre-computed outputs are in `results/zeroshot/`. Per-condition deal-rate,
 welfare, NBS-deviation and honesty/credulity tables and plots are produced in
 the later cells of each notebook (and saved under each result dir's `figures/`).
 
