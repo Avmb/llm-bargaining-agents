@@ -13,6 +13,7 @@ data/                 The bargaining-scenarios dataset + schema (data/README.md)
 scenario_generation/  The pipeline that generated the dataset
 core/                 Reference notebook defining the simulator/task/prompt/judge code,
                       plus the honesty/credulity judge rubrics (honesty_templates.py)
+analysis/             Cross-experiment analysis (the honesty-vs-utility scatter plots)
 crossmodel_eval/      Zero-shot 5-model evaluation notebooks (paper Section 4)
 rl/                   RL fine-tuning code, configs, launch scripts, and eval notebooks
                       (paper Section 5 + appendices)
@@ -72,7 +73,18 @@ GPT-5.2 judge rate honesty/credulity:
 | `eval_opus47.ipynb`  | claude-opus-4-7 |
 | `eval_qwen35.ipynb`  | Qwen3.5-9B (local vLLM) |
 
-The pre-computed outputs are in `results/crossmodel/`.
+The pre-computed outputs are in `results/crossmodel/`. Per-condition deal-rate,
+welfare, NBS-deviation and honesty/credulity tables and plots are produced in
+the later cells of each notebook (and saved under each result dir's `figures/`).
+
+The cross-experiment honesty-vs-utility scatter plots (paper figures comparing
+all models, and the trained variants against the base) are produced by
+`analysis/make_honesty_utility_scatter.py`, which reads the dataframes in
+`results/` and writes PDFs to `analysis/figures/`:
+
+```bash
+python analysis/make_honesty_utility_scatter.py
+```
 
 ## Reproducing the RL fine-tuning (Section 5)
 
