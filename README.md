@@ -111,6 +111,10 @@ runs the validation split. The paired comparisons reported in the paper
 The fine-tuned LoRA adapters are **not** included in this repository. They will
 be released separately on the HuggingFace Hub: *(link to be added)*.
 
+## License
+
+Released under the MIT License (see `LICENSE`).
+
 ## Citation
 
 ```bibtex
