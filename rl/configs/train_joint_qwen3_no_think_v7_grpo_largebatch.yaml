@@ -1,0 +1,104 @@
+# v7 joint self-play: single LoRA shared by buyer and seller. Each scenario
+# in a training step draws (transparency, player_role) uniformly from the 8
+# cells (4 transparencies x 2 roles). Both buyer and seller use the same
+# adapter and same sampling temperature; the opponent is always the current
+# policy. Validation enumerates all 8 cells per val scenario.
+buyer_model:
+  model_name: "Qwen/Qwen3-8B"
+  base_url: "http://localhost:8000/v1"
+  api_key: "unused"
+  temperature: 0.7
+  top_p: 0.8
+  presence_penalty: 1.5
+  max_completion_tokens: 1024
+  top_k: 20
+  enable_thinking: false
+
+seller_model:
+  model_name: "Qwen/Qwen3-8B"
+  base_url: "http://localhost:8000/v1"
+  api_key: "unused"
+  temperature: 0.7
+  top_p: 0.8
+  presence_penalty: 1.5
+  max_completion_tokens: 1024
+  top_k: 20
+  enable_thinking: false
+
+data:
+  train:
+    scenario_file: "../data/scenarios_by_reservation_ranges.jsonl"
+    price_tier: "low"
+    start_index: 0
+    n_scenarios: 1500
+  val:
+    scenario_file: "../data/scenarios_by_reservation_ranges.jsonl"
+    price_tier: "low"
+    start_index: 1500
+    n_scenarios: 8
+  test:
+    scenario_file: "../data/scenarios_by_reservation_ranges.jsonl"
+    price_tier: "low"
+    start_index: 1508
+    n_scenarios: 8
+  seed: 42
+
+bargaining:
+  modes: ["simultaneous"]
+  transparencies: ["full", "buyer_unaware", "seller_unaware", "both_unaware"]
+  max_rounds: [4]
+  first_actors: ["buyer"]
+  n_trials_per_scenario: 4
+
+train:
+  train_roles: ["buyer", "seller"]
+  learning_rate: 5.0e-6
+  num_steps: 300
+  scenarios_per_step: 64
+  rl_group_size: 16
+  per_device_batch_size: 24
+  gradient_accumulation_steps: 24
+  epochs_per_rollout: 4
+  optim_log_interval: 20
+  max_prompt_length: 2048
+  max_completion_length: 1024
+  clip_eps: 0.2
+  kl_coeff: 0.001
+  reward_transform: "rank"
+  is_correction: true
+  loss_type: "grpo"
+  epsilon_high: 5.0
+  kl_estimator: "k3"
+  signed_reward: true
+  offer_sanity_mult: 5.0
+  lora_r: 32
+  lora_alpha: 64
+  lora_dropout: 0.0
+  load_in_4bit: false
+  lora_name: "trained"
+  lora_target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  warmup_ratio: 0.05
+  max_grad_norm: 1.0
+  save_steps: 50
+  eval_interval: 1
+  logging_steps: 1
+
+eval:
+  batch_size: 16
+  n_trials_per_scenario: 16
+
+wandb:
+  project: "bargaining-rl"
+  entity: null
+  run_name: null
+  tags: ["train", "grpo", "qwen3-8b", "joint", "selfplay", "all_transparency", "no_think", "max_rounds_4", "largebatch", "v7"]
+  enabled: true
+
+output_dir: "./experiments"

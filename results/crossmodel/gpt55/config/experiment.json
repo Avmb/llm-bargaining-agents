@@ -1,0 +1,37 @@
+{
+  "n_trials": 8,
+  "modes": [
+    "simultaneous"
+  ],
+  "transparency": [
+    "full",
+    "buyer_unaware",
+    "seller_unaware",
+    "both_unaware"
+  ],
+  "max_rounds": [
+    6
+  ],
+  "first_actor": [
+    "buyer"
+  ],
+  "seed": 42,
+  "note": "diverse_scenarios_gpt55_low_10",
+  "buyer_model": "gpt-5.5",
+  "seller_model": "gpt-5.5",
+  "judge_model": "gpt-5.2",
+  "price_tier": "low",
+  "n_scenarios": 10,
+  "scenario_names": [
+    "1 kg of white rice",
+    "1 liter of vegetable oil",
+    "500g of table salt",
+    "6-pack of bottled water (500ml)",
+    "1 loaf of white sandwich bread",
+    "2 pounds of bananas",
+    "1 bar of soap (125g)",
+    "1 gallon of drinking water",
+    "1 lb of white granulated sugar",
+    "1 can of tuna (170g)"
+  ]
+}

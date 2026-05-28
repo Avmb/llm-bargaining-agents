@@ -1,0 +1,21 @@
+# Core evaluation / simulation
+openai>=1.40
+anthropic>=0.40
+pandas>=2.0
+numpy>=1.26,<2.3
+pyyaml>=6.0
+matplotlib>=3.8
+tqdm>=4.66
+
+# Notebooks
+jupyter
+nbformat>=5.10
+
+# RL fine-tuning (training nodes only)
+torch>=2.4
+transformers>=4.44
+peft>=0.12
+trl>=0.10
+unsloth
+vllm>=0.6
+wandb>=0.17

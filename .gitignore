@@ -1,0 +1,29 @@
+# Secrets / credentials -- never commit
+oai_key
+oai_key_uedin
+*_key
+*.key
+hf_token
+wandb_key
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Caches
+.cache/
+cache_tmp/
+cache_inductor/
+cache_triton/
+
+# Trained model checkpoints (released separately, see README)
+checkpoints/
+*.safetensors
+adapter_model.bin
+
+# Misc
+.DS_Store

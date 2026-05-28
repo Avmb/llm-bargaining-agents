@@ -1,0 +1,35 @@
+{
+  "n_trials": 40,
+  "modes": [
+    "simultaneous"
+  ],
+  "transparency": [
+    "full",
+    "buyer_unaware",
+    "seller_unaware",
+    "both_unaware"
+  ],
+  "max_rounds": [
+    4
+  ],
+  "first_actor": [
+    "buyer"
+  ],
+  "seed": 42,
+  "note": "test_set_qwen3_8b_lora_step11_v7_joint_cispo_selfplay_low_8",
+  "buyer_model": "Qwen/Qwen3-8B + LoRA step_11 v7_joint_selfplay (cispo, T=0.7 top_p=0.8)",
+  "seller_model": "Qwen/Qwen3-8B + LoRA step_11 v7_joint_selfplay (cispo, T=0.7 top_p=0.8) - SAME ADAPTER AS BUYER",
+  "judge_model": "gpt-5.2",
+  "price_tier": "low",
+  "n_scenarios": 8,
+  "scenario_names": [
+    "200g bag of white sugar",
+    "100g bar of soap",
+    "200g tin of canned tuna",
+    "5kg bag of table salt",
+    "70g packet of instant noodles",
+    "1kg bag of onions",
+    "6-pack of plain bagels",
+    "250g bar of cheddar cheese"
+  ]
+}

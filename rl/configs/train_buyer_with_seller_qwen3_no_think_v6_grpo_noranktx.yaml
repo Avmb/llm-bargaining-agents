@@ -1,0 +1,113 @@
+# --- Model configuration ---
+# Qwen3-8B with thinking disabled and max_rounds=4.
+# Baseline / ablation against train_buyer_with_seller_qwen3.yaml (thinking on, 6 rounds).
+buyer_model:
+  model_name: "Qwen/Qwen3-8B"
+  base_url: "http://localhost:8000/v1"
+  api_key: "unused"
+  temperature: 0.7
+  top_p: 0.8
+  presence_penalty: 1.5
+  max_completion_tokens: 1024
+  top_k: 20
+  enable_thinking: false
+
+seller_model:
+  model_name: "Qwen/Qwen3-8B"
+  base_url: "http://localhost:8000/v1"
+  api_key: "unused"
+  temperature: 0.1
+  top_p: 0.5
+  presence_penalty: 1.5
+  max_completion_tokens: 1024
+  top_k: 20
+  enable_thinking: false
+
+# --- Data splits ---
+data:
+  train:
+    scenario_file: "../data/scenarios_by_reservation_ranges.jsonl"
+    price_tier: "low"
+    start_index: 0
+    n_scenarios: 1500
+  val:
+    scenario_file: "../data/scenarios_by_reservation_ranges.jsonl"
+    price_tier: "low"
+    start_index: 1500
+    n_scenarios: 8
+  test:
+    scenario_file: "../data/scenarios_by_reservation_ranges.jsonl"
+    price_tier: "low"
+    start_index: 1508
+    n_scenarios: 8
+  seed: 42
+
+# --- Bargaining parameters ---
+bargaining:
+  modes: ["simultaneous"]
+  transparencies: ["seller_unaware"]
+  max_rounds: [4]
+  first_actors: ["buyer"]
+  n_trials_per_scenario: 4
+
+# --- Training (on-policy GRPO) ---
+train:
+  train_role: "buyer"
+  learning_rate: 1.0e-6
+  num_steps: 300
+  scenarios_per_step: 64
+  rl_group_size: 16
+  per_device_batch_size: 24
+  gradient_accumulation_steps: 1
+  epochs_per_rollout: 4
+  optim_log_interval: 20
+  max_prompt_length: 2048
+  max_completion_length: 1024
+  # GRPO / CISPO + v6 bug fixes
+  clip_eps: 0.2
+  kl_coeff: 0.001
+  reward_transform: "none"
+  is_correction: true
+  loss_type: "grpo"
+  epsilon_high: 5.0
+  kl_estimator: "k3"
+  signed_reward: true
+  offer_sanity_mult: 5.0
+  # LoRA
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.0
+  load_in_4bit: false
+  lora_name: "trained"
+  # Train PEFT on all 7 unfused HF projections; the post-save fuser stitches
+  # q/k/v -> qkv_proj and gate/up -> gate_up_proj before the vLLM hot-load,
+  # so vLLM picks up the full LoRA capacity (no silent drops).
+  lora_target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  # Schedule
+  warmup_ratio: 0.05
+  max_grad_norm: 1.0
+  save_steps: 50
+  eval_interval: 1
+  logging_steps: 1
+
+# --- Evaluation ---
+eval:
+  batch_size: 16
+  n_trials_per_scenario: 16          # 4× the bargaining default for tighter val CI
+
+# --- Weights & Biases ---
+wandb:
+  project: "bargaining-rl"
+  entity: null
+  run_name: null
+  tags: ["train", "grpo", "qwen3-8b", "buyer", "seller_unaware", "no_think", "max_rounds_4"]
+  enabled: true
+
+output_dir: "./experiments"
