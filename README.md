@@ -56,7 +56,9 @@ set `VLLM_SSH_HOST` if the server runs on another machine you reach over SSH.
 `data/scenarios_by_reservation_ranges.jsonl` holds 4561 commodity-bargaining
 scenarios across four price tiers; the paper uses the first ten `low`-tier
 scenarios. See `data/README.md` for the schema. Regenerate it with
-`scenario_generation/bargaining_scenario_generator.ipynb`.
+`scenario_generation/bargaining_scenario_generator.ipynb`. The dataset is also
+on the HuggingFace Hub at
+[AnvaMiba/llm-bargaining-scenarios](https://huggingface.co/datasets/AnvaMiba/llm-bargaining-scenarios).
 
 ## Reproducing the zero-shot model evaluation (Section 4)
 
@@ -120,8 +122,13 @@ runs the validation split. The paired comparisons reported in the paper
 
 ## Trained checkpoints
 
-The fine-tuned LoRA adapters are **not** included in this repository. They will
-be released separately on the HuggingFace Hub: *(link to be added)*.
+The fine-tuned LoRA adapters are **not** included in this repository. They are
+released on the HuggingFace Hub at
+[AnvaMiba/qwen3-8b-bargaining-lora](https://huggingface.co/AnvaMiba/qwen3-8b-bargaining-lora):
+a single repo with one subfolder per variant (`buyer-grpo`, `buyer-cispo`,
+`buyer-grpo-norank`, `buyer-cispo-norank`, `seller-grpo`, `seller-cispo`,
+`joint-grpo`, `joint-cispo`). Load one with
+`PeftModel.from_pretrained(base, "AnvaMiba/qwen3-8b-bargaining-lora", subfolder="<variant>")`.
 
 ## License
 
