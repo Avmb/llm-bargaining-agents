@@ -4,7 +4,7 @@ Code, data, and experiment outputs for the paper studying LLM agents that
 bargain over a text channel under varying information transparency, and the
 effect of reinforcement-learning fine-tuning on their honesty and credulity.
 
-> Paper: *(link to be added)*
+> Paper: *https://arxiv.org/abs/2605.31445*
 
 ## What's here
 
