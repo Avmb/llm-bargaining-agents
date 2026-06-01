@@ -137,9 +137,13 @@ Released under the MIT License (see `LICENSE`).
 ## Citation
 
 ```bibtex
-@inproceedings{TODO,
-  title  = {Used Car Salesbots? Honesty and Credulity of LLMs as Bargaining Agents under Partial Information},
-  author = {TODO},
-  year   = {2026}
+@misc{micelibarone2026usedcarsalesbotshonesty,
+      title={Used Car Salesbots? Honesty and Credulity of LLMs as Bargaining Agents under Partial Information}, 
+      author={Antonio Valerio Miceli-Barone and Vaishak Belle and Shay B. Cohen},
+      year={2026},
+      eprint={2605.31445},
+      archivePrefix={arXiv},
+      primaryClass={cs.GT},
+      url={https://arxiv.org/abs/2605.31445}, 
 }
 ```
