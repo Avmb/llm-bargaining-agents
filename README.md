@@ -13,10 +13,11 @@ data/                 The bargaining-scenarios dataset + schema (data/README.md)
 scenario_generation/  The pipeline that generated the dataset
 core/                 Reference notebook defining the simulator/task/prompt/judge code,
                       plus the honesty/credulity judge rubrics (honesty_templates.py)
-analysis/             Cross-experiment analysis (the honesty-vs-utility scatter plots)
-zeroshot_eval/        Zero-shot 5-model evaluation notebooks (paper Section 4)
+analysis/             Cross-experiment analysis (the honesty-vs-utility scatter plots
+                      and the offer-dynamics analysis, offer_dynamics.py)
+zeroshot_eval/        Zero-shot 5-model evaluation notebooks (paper Section 3.1)
 rl/                   RL fine-tuning code, configs, launch scripts, and eval notebooks
-                      (paper Section 5 + appendices)
+                      (paper Section 3.3 + appendices)
 results/              Pre-computed experiment outputs cited in the paper
    zeroshot/          one directory per model
    rl_evals/          One dir per fine-tuned variant (paired vs base)
@@ -25,8 +26,9 @@ results/              Pre-computed experiment outputs cited in the paper
 Each `results/.../` directory contains `config/experiment.json` (run
 configuration), `data/*.pkl` (per-trial dataframes, including deal prices and
 judge honesty / credulity scores), and `figures/` (auto-generated analysis
-plots). The raw per-trial dialogue logs are not included to keep the repository
-small; representative annotated dialogues are reproduced in the paper appendix,
+plots). The zero-shot directories also contain `data/offers.jsonl`, the numeric
+offer sequence of every trial (used by `analysis/offer_dynamics.py`). The raw
+per-trial dialogue logs are not included to keep the repository small; representative annotated dialogues are reproduced in the paper appendix,
 and re-running the notebooks regenerates the full logs under `./experiments/`.
 
 ## Setup
@@ -60,7 +62,7 @@ scenarios. See `data/README.md` for the schema. Regenerate it with
 on the HuggingFace Hub at
 [AnvaMiba/llm-bargaining-scenarios](https://huggingface.co/datasets/AnvaMiba/llm-bargaining-scenarios).
 
-## Reproducing the zero-shot model evaluation (Section 4)
+## Reproducing the zero-shot model evaluation (Section 3.1)
 
 Each notebook in `zeroshot_eval/` runs one model in self-play across the four
 transparency conditions (`full`, `buyer_unaware`, `seller_unaware`,
@@ -88,7 +90,7 @@ all models, and the trained variants against the base) are produced by
 python analysis/make_honesty_utility_scatter.py
 ```
 
-## Reproducing the RL fine-tuning (Section 5)
+## Reproducing the RL fine-tuning (Section 3.3)
 
 Training (`rl/bargaining_rl.py`) runs across **two nodes of 4 GPUs each**: one
 node serves the opponent/rollout policy with vLLM, the other runs DDP
